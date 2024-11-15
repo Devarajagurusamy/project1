@@ -8,4 +8,12 @@ export class CreateUserDto {
   @IsInt()
   @Min(18)
   age: number;
+
+  @IsString()
+  @IsNotEmpty()
+  role: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
