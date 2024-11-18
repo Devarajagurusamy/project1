@@ -18,9 +18,9 @@ export class UsersService {
   }
 
   // Fetch a user by username
-  async findByUsername(username: string): Promise<User | undefined> {
-    return this.userModel.findOne({ username }).exec();
-  }
+  // async findByUsername(username: string): Promise<User | undefined> {
+  //   return this.userModel.findOne({ username }).exec();
+  // }
 
   // Fetch a user by ID
   async findById(id: string): Promise<User | undefined> {
@@ -62,5 +62,9 @@ export class UsersService {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
     return deletedUser;
+  }
+
+  async findByUsername(username: string): Promise<User | null> {  
+    return this.userModel.findOne({ name:username }).exec();
   }
 }

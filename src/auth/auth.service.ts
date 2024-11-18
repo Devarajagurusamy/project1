@@ -6,31 +6,24 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,  // Inject the UsersService to interact with user data
-    private readonly jwtService: JwtService,      // Inject JwtService to issue JWT tokens
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
   ) {}
 
-  // Validate user credentials (username and password)
+  // Validate user credentials
   async validateUser(username: string, password: string): Promise<any> {
-    // Find the user by username
     const user = await this.usersService.findByUsername(username);
-    
-    // If user exists and password matches
+
     if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, ...result } = user;  // Exclude password from user data before returning
-      return result;  // Return the user data (excluding the password)
+      const { password, ...result } = user; // Exclude password from the returned user object
+      return result;
     }
-    
-    // If credentials are invalid, throw UnauthorizedException
-    throw new UnauthorizedException('Invalid credentials');
+    throw new UnauthorizedException('Invalid data service');
   }
 
-  // Generate and return a JWT token for a user
+  // Generate a JWT token
   async login(user: any) {
-    // Create payload for JWT token (usually includes user ID and username)
-    const payload = { username: user.username, sub: user.id };
-    
-    // Sign the payload and generate the JWT token
+    const payload = { username: user.username, sub: user.id }; // Payload to encode in JWT
     return {
       access_token: this.jwtService.sign(payload),
     };
